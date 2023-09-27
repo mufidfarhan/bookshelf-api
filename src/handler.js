@@ -1,4 +1,5 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
+
 const { nanoid } = require('nanoid');
 const books = require('./books');
 
@@ -35,7 +36,6 @@ const addBookHandler = (request, h) => {
   }
 
   const newBook = {
-    // eslint-disable-next-line max-len
     id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt,
   };
 
@@ -63,8 +63,64 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
-const getAllBooksHandler = () => {
+const getAllBooksHandler = (request) => {
+  const { name, reading, finished } = request.query;
+
+  if (name !== undefined) {
+    const filteredBooks = books.filter((b) => b.name.toLowerCase().includes(name.toLowerCase()));
+
+    const bookIdentity = filteredBooks.map((book) => {
+      // eslint-disable-next-line no-shadow
+      const { id, name, publisher } = book;
+      return { id, name, publisher };
+    });
+
+    return {
+      status: 'success',
+      data: {
+        books: bookIdentity,
+      },
+    };
+  }
+
+  if (reading !== undefined) {
+    // eslint-disable-next-line eqeqeq
+    const filteredBooks = books.filter((b) => b.reading == reading);
+
+    const bookIdentity = filteredBooks.map((book) => {
+      // eslint-disable-next-line no-shadow
+      const { id, name, publisher } = book;
+      return { id, name, publisher };
+    });
+
+    return {
+      status: 'success',
+      data: {
+        books: bookIdentity,
+      },
+    };
+  }
+
+  if (finished !== undefined) {
+    // eslint-disable-next-line eqeqeq
+    const filteredBooks = books.filter((b) => b.finished == finished);
+
+    const bookIdentity = filteredBooks.map((book) => {
+      // eslint-disable-next-line no-shadow
+      const { id, name, publisher } = book;
+      return { id, name, publisher };
+    });
+
+    return {
+      status: 'success',
+      data: {
+        books: bookIdentity,
+      },
+    };
+  }
+
   const bookIdentity = books.map((book) => {
+    // eslint-disable-next-line no-shadow
     const { id, name, publisher } = book;
     return { id, name, publisher };
   });
@@ -182,6 +238,5 @@ const deleteBookByIdHandler = (request, h) => {
 };
 
 module.exports = {
-  // eslint-disable-next-line max-len
   addBookHandler, getAllBooksHandler, getBookByIdHandler, editBookByIdHandler, deleteBookByIdHandler,
 };

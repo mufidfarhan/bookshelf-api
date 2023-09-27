@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 const {
   addBookHandler, getAllBooksHandler, getBookByIdHandler, editBookByIdHandler, deleteBookByIdHandler,
 } = require('./handler');
